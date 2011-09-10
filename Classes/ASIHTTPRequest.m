@@ -765,10 +765,15 @@ static NSOperationQueue *sharedQueue = nil;
 	return [[[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:[self responseEncoding]] autorelease];
 }
 
+// PMans modified this to also return YES for gzip encoded content types...
 - (BOOL)isResponseCompressed
 {
 	NSString *encoding = [[self responseHeaders] objectForKey:@"Content-Encoding"];
-	return encoding && [encoding rangeOfString:@"gzip"].location != NSNotFound;
+    NSString *type = [[self responseHeaders] objectForKey:@"Content-Type"];
+	BOOL contentEncodingGzip = encoding && [encoding rangeOfString:@"gzip"].location != NSNotFound;
+    BOOL contentTypeGzip = type && [type rangeOfString:@"gzip"].location != NSNotFound;
+    
+    return contentEncodingGzip || contentTypeGzip;
 }
 
 - (NSData *)responseData
