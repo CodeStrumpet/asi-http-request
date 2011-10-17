@@ -4356,6 +4356,7 @@ static NSOperationQueue *sharedQueue = nil;
 
 + (NSString *)defaultUserAgentString
 {
+    NSString *returnUserAgent;
 	@synchronized (self) {
 
 		if (!defaultUserAgent) {
@@ -4420,8 +4421,9 @@ static NSOperationQueue *sharedQueue = nil;
 			// Takes the form "My Application 1.0 (Macintosh; Mac OS X 10.5.7; en_GB)"
 			[self setDefaultUserAgentString:[NSString stringWithFormat:@"%@ %@ (%@; %@ %@; %@)", appName, appVersion, deviceName, OSName, OSVersion, locale]];	
 		}
-		return [[defaultUserAgent retain] autorelease];
+		returnUserAgent = [[defaultUserAgent retain] autorelease];
 	}
+    return returnUserAgent;
 }
 
 + (void)setDefaultUserAgentString:(NSString *)agent
@@ -4689,9 +4691,11 @@ static NSOperationQueue *sharedQueue = nil;
 
 + (id <ASICacheDelegate>)defaultCache
 {
+    id <ASICacheDelegate> returnDelegate;
     @synchronized(self) {
-        return [[defaultCache retain] autorelease];
+        returnDelegate = [[defaultCache retain] autorelease];
     }
+    return returnDelegate;
 }
 
 
